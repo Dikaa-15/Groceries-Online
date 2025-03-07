@@ -1,0 +1,5 @@
+/* Mengubah warna background footer Filament */
+.filament-main-footer {
+    background-color: #22c55e !important; /* Tailwind Green-500 */
+    color: white !important; /* Warna teks putih */
+}

@@ -1,0 +1,9 @@
+/* Ubah warna background utama */
+.filament-body {
+    @apply bg-green-500 text-white;
+}
+
+/* Jika perlu ubah background sidebar */
+.filament-sidebar {
+    @apply bg-green-600 text-white;
+}
