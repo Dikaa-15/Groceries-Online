@@ -32,7 +32,7 @@ class CartResource extends Resource
     {
         return static::getModel()::count() > 0 ? 'primary' : 'danger';
     }
-    
+
     protected static ?string $navigationGroup = 'Shopping';
 
     public static function form(Form $form): Form
@@ -68,14 +68,14 @@ class CartResource extends Resource
                 ImageColumn::make('product.image')->label('Image')->circular(),
                 TextColumn::make('product.name')->label('Product'),
                 TextColumn::make('quantity')->label('Quantity'),
-                TextColumn::make('created_at')->label('Added At')->dateTime(),
+                TextColumn::make('created_at')->label('Added At')->date('F j, Y'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

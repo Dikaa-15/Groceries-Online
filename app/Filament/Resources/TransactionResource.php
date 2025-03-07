@@ -17,6 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TransactionResource\Pages;
@@ -119,9 +120,10 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('order_id')->label('Order ID')->searchable(),
                 TextColumn::make('user.name')->label('User'),
-                TextColumn::make('product.name')->label('Product'),
-                TextColumn::make('quantity')->label('Quantity'),
+                TextColumn::make('product.name')->label('Product')->searchable(),
+                TextColumn::make('quantity')->label('Quantity')->sortable(),
                 TextColumn::make('total_price')->label('Total Price')->money('IDR'),
                 TextColumn::make('status')->label('Status')->badge()
                     ->color(fn(string $state): string => match ($state) {
@@ -131,14 +133,20 @@ class TransactionResource extends Resource
                     }),
                 TextColumn::make('payment')->label('Payment Method'),
                 ImageColumn::make('transfer_poto')->label('Transfer Proof'),
-                TextColumn::make('created_at')->label('Transaction Date')->dateTime(),
+                TextColumn::make('created_at')->label('Transaction Date')->date('F j, Y')->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Transaction Status')
+                    ->options([
+                        'success' => 'Success',
+                        'failed' => 'Failed',
+                        'pending' => 'Pending',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

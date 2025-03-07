@@ -3,12 +3,11 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Transaction;
-use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class LatestTransactions extends BaseWidget
 {
@@ -34,7 +33,20 @@ class LatestTransactions extends BaseWidget
                     'pending' => 'warning', // Kuning
                 }),
             ImageColumn::make('transfer_poto')->label('Proof'),
-            TextColumn::make('created_at')->label('Order date'),
+            TextColumn::make('created_at')->label('Order date')->date('F j, Y'),
+        ];
+    }
+
+    protected function getTableFilters(): array
+    {
+        return [
+            SelectFilter::make('status')
+                ->label('Transaction Status')
+                ->options([
+                    'success' => 'Success',
+                    'failed' => 'Failed',
+                    'pending' => 'Pending',
+                ]),
         ];
     }
 }
