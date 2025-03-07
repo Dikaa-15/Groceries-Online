@@ -1,4 +1,4 @@
-<section class="relative bg-green-50 pt-20 pb-16 min-h-screen flex items-center">
+<section class="relative bg-green-50 pt-24 pb-16 min-h-screen flex items-center">
     <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-6">
         <!-- Left Content -->
         <div class="md:w-1/2 text-center md:text-left">
