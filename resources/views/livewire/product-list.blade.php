@@ -33,16 +33,32 @@
 
             <div class="grid grid-cols-3 gap-6">
                 @forelse ($products as $product)
-                <div class="border rounded-lg shadow-lg overflow-hidden bg-white bg-opacity-30 backdrop-blur-lg">
-                    <img src="{{ asset('storage/' . $product->image) }}"
-                        alt="{{ $product->name }}"
+                <div class="border rounded-lg shadow-lg overflow-hidden bg-white hover:shadow-xl transition">
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                         class="w-full h-48 object-cover rounded-t-lg">
 
                     <div class="p-4">
-                        <h3 class="text-lg font-bold text-center text-gray-800">{{ $product->name }}</h3>
-                        <p class="text-green-500 font-bold text-center text-lg mt-2">
-                            Rp {{ number_format($product->price, 0, ',', '.') }}
-                        </p>
+                        <!-- Nama & Stok dalam satu baris -->
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-lg font-bold text-gray-800">{{ $product->name }}</h3>
+                            <p class="{{ $product->stock > 0 ? 'text-gray-600' : 'text-red-500 font-bold' }}">
+                                {{ $product->stock > 0 ? "Stock: $product->stock" : "Out of Stock" }}
+                            </p>
+                        </div>
+
+                        <!-- Harga & Icon Cart dalam satu baris -->
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="text-green-500 font-bold text-lg">
+                                Rp {{ number_format($product->price, 0, ',', '.') }}
+                            </p>
+                            <button wire:click="addToCart({{ $product->id }})"
+                                class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l1.2 5.4m0 0L7 15h10l2.8-6.6M6.2 8.4h11.6M10 21h4m-7-4h10" />
+                                </svg>
+                            </button>
+                        </div>
 
                         <a href="{{ url('/products/' . $product->id) }}"
                             class="block text-center bg-green-500 text-white font-medium py-2 mt-4 rounded-md hover:bg-green-600 transition">
