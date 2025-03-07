@@ -32,6 +32,7 @@ class CartResource extends Resource
     {
         return static::getModel()::count() > 0 ? 'primary' : 'danger';
     }
+    
     protected static ?string $navigationGroup = 'Shopping';
 
     public static function form(Form $form): Form
