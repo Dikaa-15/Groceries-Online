@@ -7,10 +7,12 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use App\Http\Middleware\AdminMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Widgets\DashboardOverview;
+use App\Filament\Widgets\TransactionsChart;
 use App\Filament\Widgets\LatestTransactions;
-use App\Http\Middleware\AdminMiddleware;
+use App\Filament\Widgets\ProductsSalesChart;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -35,6 +37,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->widgets([
                 DashboardOverview::class, // Menambahkan widget ke dashboard
+                TransactionsChart::class,
+                ProductsSalesChart::class,
                 LatestTransactions::class,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
