@@ -27,6 +27,15 @@ class RatesResource extends Resource
 
     protected static ?string $navigationGroup = 'Shopping';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 0 ? 'primary' : 'danger';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -68,7 +77,7 @@ class RatesResource extends Resource
             ->filters([
                 Filter::make('rate_above_3')
                     ->label('Rating > 3')
-                    ->query(fn ($query) => $query->where('rate', '>', 3)),
+                    ->query(fn($query) => $query->where('rate', '>', 3)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
