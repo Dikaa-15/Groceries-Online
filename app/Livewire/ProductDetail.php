@@ -67,6 +67,14 @@ class ProductDetail extends Component
             'transferPhoto' => 'required|image|max:2048', // Maks 2MB
         ]);
 
+        // Cek stok sebelum checkout
+        if ($this->product->stock < $this->quantity) {
+            session()->flash('error', 'Stock is not enough!');
+            return;
+        }
+
+
+
         // Simpan Foto Transfer
         $photoPath = $this->transferPhoto->store('transfers', 'public');
 
@@ -81,6 +89,9 @@ class ProductDetail extends Component
             'payment' => $this->paymentMethod,
             'transfer_poto' => $photoPath,
         ]);
+
+        // Kurangi stok produk
+        $this->product->decrement('stock', $this->quantity);
 
         return redirect()->route('/');
     }
