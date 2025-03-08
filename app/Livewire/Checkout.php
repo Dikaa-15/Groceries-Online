@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Carts;
+use App\Models\Product;
 use Livewire\Component;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
@@ -18,17 +19,31 @@ class Checkout extends Component
     public $transfer_poto;
     public $selectedItems = [];
 
-    public function mount()
+    public function mount($directCheckout = false)
     {
-        $selectedItems = session()->get('selected_cart_items', []);
+        if ($directCheckout) {
+            $productId = session()->get('direct_checkout_product_id');
+            if ($productId) {
+                $product = Product::findOrFail($productId);
 
-        $this->cartItems = Carts::where('user_id', Auth::id())
-            ->whereIn('id', $selectedItems)
-            ->get();
+                $this->cartItems = collect([(object) [
+                    'id' => null,
+                    'product_id' => $product->id,
+                    'product' => $product,
+                    'quantity' => 1,
+                ]]);
 
-        $this->totalPrice = $this->cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+                $this->totalPrice = $product->price;
+            }
+        } else {
+            $selectedItems = session()->get('selected_cart_items', []);
+            $this->cartItems = Carts::where('user_id', Auth::id())
+                ->whereIn('id', $selectedItems)
+                ->get();
+
+            $this->totalPrice = $this->cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+        }
     }
-
 
     public function checkout()
     {
@@ -37,7 +52,6 @@ class Checkout extends Component
             'transfer_poto' => 'required|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
-        // Simpan gambar ke storage
         $photoPath = $this->transfer_poto->store('transfers', 'public');
 
         foreach ($this->cartItems as $item) {
@@ -51,27 +65,14 @@ class Checkout extends Component
                 'transfer_poto' => $photoPath,
             ]);
 
-            // Hapus hanya item yang di-checkout, bukan semua cart
-            Carts::where('id', $item->id)->delete();
+            if ($item->id) {
+                Carts::where('id', $item->id)->delete();
+            }
         }
 
-
-        // Hapus cart setelah checkout
-        // Hapus hanya item yang dipilih dari cart
-        Carts::whereIn('id', $this->selectedItems)->delete();
-
         session()->flash('message', 'Checkout berhasil! Pesanan sedang diproses.');
-        return redirect()->route('/'); // Sesuaikan dengan route yang sesuai
+        return redirect()->route('home');
     }
-
-    public function updatedtransfer_poto()
-    {
-        $this->validate([
-            'transfer_poto' => 'required|image|max:2048',
-        ]);
-    }
-
-
 
     public function render()
     {

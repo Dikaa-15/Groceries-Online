@@ -4,36 +4,46 @@ namespace App\Livewire;
 
 use App\Models\Carts;
 use App\Models\Product;
+use App\Models\Transaction;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class ProductDetail extends Component
 {
+    use WithFileUploads;
+
     public $product;
     public $quantity = 1; // Default quantity 1
+
+    public $paymentMethod, $transferPhoto;
 
     public function mount($productId)
     {
         $this->product = Product::findOrFail($productId);
     }
 
+    public function updatedQuantity()
+    {
+        if ($this->quantity < 1) {
+            $this->quantity = 1; // Minimal quantity adalah 1
+        }
+    }
+
+
     public function addToCart()
     {
-        // Pastikan user sudah login
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'You must log in to add items to the cart.');
         }
 
-        // Cek apakah produk sudah ada di keranjang
         $cartItem = Carts::where('user_id', Auth::id())
             ->where('product_id', $this->product->id)
             ->first();
 
         if ($cartItem) {
-            // Jika sudah ada, update quantity
             $cartItem->increment('quantity', $this->quantity);
         } else {
-            // Jika belum, buat baru
             Carts::create([
                 'user_id' => Auth::id(),
                 'product_id' => $this->product->id,
@@ -41,15 +51,38 @@ class ProductDetail extends Component
             ]);
         }
 
-        // Kirim event (kalau ingin update di navbar misalnya)
         $this->dispatch('cartUpdated');
-
         session()->flash('success', 'Product added to cart!');
     }
 
-    public function checkout()
+    public function goToCheckout($productId)
     {
-        return redirect()->route('checkout');
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // Validasi Input
+        $this->validate([
+            'paymentMethod' => 'required|in:bca,bri,bni',
+            'transferPhoto' => 'required|image|max:2048', // Maks 2MB
+        ]);
+
+        // Simpan Foto Transfer
+        $photoPath = $this->transferPhoto->store('transfers', 'public');
+
+        // Simpan Order
+        $order = Transaction::create([
+            'order_id' => 'ORD-' . time(),
+            'user_id' => Auth::id(),
+            'product_id' => $productId,
+            'quantity' => $this->quantity,
+            'total_price' => $this->product->price * $this->quantity,
+            'status' => 'pending',
+            'payment' => $this->paymentMethod,
+            'transfer_poto' => $photoPath,
+        ]);
+
+        return redirect()->route('/');
     }
 
     public function render()
