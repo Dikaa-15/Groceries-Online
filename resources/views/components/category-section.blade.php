@@ -10,11 +10,13 @@
             ['name' => 'Susu', 'icon' => '🥛'],
             ['name' => 'Telur', 'icon' => '🥚']
         ] as $category)
-            <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center min-w-[120px] sm:min-w-[160px] md:min-w-0
-                        md:hover:shadow-xl md:transition-transform md:transform md:hover:scale-105 cursor-pointer border border-gray-200">
-                <span class="text-5xl">{{ $category['icon'] }}</span>
-                <p class="mt-3 text-lg font-semibold text-gray-800">{{ $category['name'] }}</p>
-            </div>
+            <a href="{{ url('/products') }}" class="block">
+                <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center min-w-[120px] sm:min-w-[160px] md:min-w-0
+                            md:hover:shadow-xl md:transition-transform md:transform md:hover:scale-105 cursor-pointer border border-gray-200">
+                    <span class="text-5xl">{{ $category['icon'] }}</span>
+                    <p class="mt-3 text-lg font-semibold text-gray-800">{{ $category['name'] }}</p>
+                </div>
+            </a>
         @endforeach
     </div>
 </div>

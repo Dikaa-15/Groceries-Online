@@ -26,6 +26,8 @@
         {{ $slot }}
     </main>
 
+    <x-footer></x-footer>
+
     @livewireStyles
 @livewireScripts
 
