@@ -71,7 +71,7 @@ class Checkout extends Component
         }
 
         session()->flash('message', 'Checkout berhasil! Pesanan sedang diproses.');
-        return redirect()->route('home');
+        return redirect()->route('/');
     }
 
     public function render()
