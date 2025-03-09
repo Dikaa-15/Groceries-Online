@@ -67,6 +67,8 @@
 
 
 
+
+
                         </div>
 
                         <a href="{{ url('/products/' . $product->id) }}"
