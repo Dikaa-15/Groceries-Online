@@ -5,6 +5,7 @@ use App\Livewire\CartPage;
 use App\Livewire\Checkout;
 use App\Livewire\ProductList;
 use App\Livewire\ProductDetail;
+use App\Livewire\User\DashboardUser;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -28,5 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{productId}', ProductDetail::class)->name('product.detail');
     Route::get('/cart', CartPage::class)->name('cart');
     Route::get('/checkout', Checkout::class)->middleware('auth')->name('checkout');
+    Route::get('/user/dashboard', DashboardUser::class)->name('user.dashboard');
+
 
 });

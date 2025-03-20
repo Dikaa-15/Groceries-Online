@@ -29,17 +29,20 @@ class FeaturedProducts extends Component
             return;
         }
 
-        $product = Product::find($productId);
+        $product = Product::where('id', $productId)->first();
         if (!$product) {
             session()->flash('error', 'Produk tidak ditemukan!');
             return;
         }
 
+
         // Cek apakah stok masih tersedia
         if ($product->stock <= 0) {
+            $this->dispatch('stockUpdated'); // Tambahkan event Livewire
             session()->flash('error', 'Stok produk habis!');
             return;
         }
+
 
         // Cari apakah produk sudah ada di keranjang user
         $cartItem = Carts::where('user_id', $user->id)

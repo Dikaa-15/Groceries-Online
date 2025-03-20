@@ -6,8 +6,7 @@
             <div class="space-y-2 text-gray-600 text-lg">
                 @foreach (['sayuran', 'buah', 'daging', 'susu', 'telur'] as $category)
                 <label class="flex items-center space-x-2 cursor-pointer">
-                    <input type="checkbox" wire:model.live="selectedCategories" value="{{ $category }}"
-                        class="rounded text-green-500 focus:ring-green-500">
+                    <input type="checkbox" wire:model.live.debounce.500ms="selectedCategories" value="{{ $category }}">
                     <span class="{{ in_array($category, $selectedCategories) ? 'text-green-500 font-bold' : '' }}">
                         {{ ucfirst($category) }}
                     </span>
@@ -43,15 +42,15 @@
                                 Rp {{ number_format($product->price, 0, ',', '.') }}
                             </p>
                             <div x-data="{ show: false }" class="relative">
-                                <button
-                                    wire:click="addToCart({{ $product->id }})"
-                                    @click="show = true; setTimeout(() => show = false, 1500)"
-                                    class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition relative">
+                                <button wire:click="addToCart({{ $product->id }})"
+                                    :disabled="{{ $product->stock <= 0 }}"
+                                    class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition disabled:opacity-50 disabled:cursor-not-allowed">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 3h2l1.2 5.4m0 0L7 15h10l2.8-6.6M6.2 8.4h11.6M10 21h4m-7-4h10" />
                                     </svg>
                                 </button>
+
 
                                 <!-- Animasi +1 -->
                                 <span x-show="show"

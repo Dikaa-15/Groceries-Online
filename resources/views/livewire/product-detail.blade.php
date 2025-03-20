@@ -15,10 +15,11 @@
 
                 <!-- Input Quantity -->
                 <div class="mt-4 flex items-center">
-                    <label class="mr-2 font-semibold">Quantity:</label>
-                    <input type="number" min="1" wire:model.live="quantity"
-                        class="w-16 px-2 py-1 border rounded-md">
+                    <button wire:click="decreaseQuantity" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-l">−</button>
+                    <input type="number" min="1" wire:model="quantity" class="w-16 text-center border-t border-b">
+                    <button wire:click="increaseQuantity" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-r">+</button>
                 </div>
+
 
                 <!-- Button Add to Cart -->
                 {{-- <button wire:click="addToCart"
@@ -27,7 +28,7 @@
                 </button> --}}
 
                 @if (session()->has('success'))
-                    <p class="text-green-600 mt-4">{{ session('success') }}</p>
+                <p class="text-green-600 mt-4">{{ session('success') }}</p>
                 @endif
             </div>
 
@@ -87,7 +88,7 @@
                     <input type="file" wire:model="transferPhoto"
                         class="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-500">
                     @error('transferPhoto')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -99,10 +100,12 @@
                         Add to Cart
                     </button>
                     <!-- Checkout Button -->
-                    <button wire:click="goToCheckout({{ $product->id }})"
-                        class="w-1/2 mt-6 px-6 py-3 bg-blue-600 text-white text-lg font-bold rounded-lg hover:bg-blue-700 transition">
+                    <button wire:click="goToCheckout({{ $product->id }})" wire:loading.attr="disabled"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">
                         Checkout Now
+                        <span wire:loading class="animate-spin ml-2">🔄</span>
                     </button>
+
 
                 </div>
             </div>

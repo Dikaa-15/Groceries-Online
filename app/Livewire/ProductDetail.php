@@ -20,7 +20,7 @@ class ProductDetail extends Component
 
     public function mount($productId)
     {
-        $this->product = Product::findOrFail($productId);
+        $this->product = Product::find($productId) ?? abort(404, 'Product not found');
     }
 
     public function updatedQuantity()
@@ -34,8 +34,10 @@ class ProductDetail extends Component
     public function addToCart()
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'You must log in to add items to the cart.');
+            $this->dispatch('redirectToLogin'); // Tangani di front-end Livewire listener
+            return;
         }
+
 
         $cartItem = Carts::where('user_id', Auth::id())
             ->where('product_id', $this->product->id)
@@ -64,8 +66,9 @@ class ProductDetail extends Component
         // Validasi Input
         $this->validate([
             'paymentMethod' => 'required|in:bca,bri,bni',
-            'transferPhoto' => 'required|image|max:2048', // Maks 2MB
+            'transferPhoto' => $this->paymentMethod !== 'bca' ? 'nullable' : 'required|image|max:2048',
         ]);
+
 
         // Cek stok sebelum checkout
         if ($this->product->stock < $this->quantity) {
@@ -95,6 +98,16 @@ class ProductDetail extends Component
 
         return redirect()->route('/');
     }
+
+    public function increaseQuantity()
+    {
+        $this->quantity++;
+    }
+    public function decreaseQuantity()
+    {
+        if ($this->quantity > 1) $this->quantity--;
+    }
+
 
     public function render()
     {
