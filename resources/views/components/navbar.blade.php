@@ -17,22 +17,23 @@
         <!-- Icons (Profile & Cart) + Auth Buttons -->
         <div class="flex items-center space-x-5">
             @auth
-                <a href="{{ url('/profile') }}" class="hover:text-green-600 text-gray-400 transition">
-                    <i class="fas fa-user text-xl"></i>
-                </a>
-                <a href="{{ url('/cart') }}" class="hover:text-green-600 text-gray-400 transition relative">
-                    <i class="fas fa-shopping-cart text-xl"></i>
-                    <span class="absolute -top-2 -right-2">@livewire('cart-icon')</span>
-                </a>
+            <a href="{{ url('/profile') }}" class="hover:text-green-600 text-gray-400 transition">
+                <i class="fas fa-user text-xl"></i>
+            </a>
+            <a href="{{ url('/cart') }}" class="hover:text-green-600 text-gray-400 transition relative">
+                <i class="fas fa-shopping-cart text-xl"></i>
+                <span class="absolute -top-2 -right-2">@livewire('cart-icon')
+                </span>
+            </a>
             @else
-                <a href="{{ url('/login') }}" 
-                   class="px-4 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition duration-300">
-                   Login
-                </a>
-                <a href="{{ url('/register') }}" 
-                   class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300">
-                   Register
-                </a>
+            <a href="{{ url('/login') }}"
+                class="px-4 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition duration-300">
+                Login
+            </a>
+            <a href="{{ url('/register') }}"
+                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300">
+                Register
+            </a>
             @endauth
 
             <!-- Hamburger Button (Mobile) -->
@@ -44,12 +45,12 @@
 
     <!-- Mobile Menu -->
     <div x-show="open" class="md:hidden bg-white shadow-md absolute top-16 right-4 w-48 z-50 rounded-lg"
-         x-transition:enter="transition ease-out duration-200 transform"
-         x-transition:enter-start="opacity-0 scale-95"
-         x-transition:enter-end="opacity-100 scale-100"
-         x-transition:leave="transition ease-in duration-150 transform"
-         x-transition:leave-start="opacity-100 scale-100"
-         x-transition:leave-end="opacity-0 scale-95">
+        x-transition:enter="transition ease-out duration-200 transform"
+        x-transition:enter-start="opacity-0 scale-95"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-150 transform"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95">
         <ul class="flex flex-col text-lg text-gray-700">
             <li><a href="{{ url('/') }}" class="block px-4 py-2 hover:bg-gray-100">Home</a></li>
             <li><a href="{{ url('/products') }}" class="block px-4 py-2 hover:bg-gray-100">Products</a></li>

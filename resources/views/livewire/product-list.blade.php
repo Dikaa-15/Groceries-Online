@@ -39,8 +39,13 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @forelse ($products as $product)
-                <div wire:key="product-{{ $product->id }}"
-                    class="border rounded-2xl shadow-lg bg-white hover:shadow-2xl transition-transform transform hover:scale-105">
+                <div wire:key="product->{{ $product->id }}"
+                    x-data="{ show: false }"
+                    x-intersect.once="show = true"
+                    class="border rounded-2xl shadow-lg bg-white hover:shadow-2xl transition-all transform hover:scale-105 
+                    duration-500 ease-in-out opacity-0 translate-y-10"
+                    :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+
                     <img loading="lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                         class="w-full h-56 object-cover rounded-t-2xl transition-all duration-300 hover:opacity-80">
 
@@ -71,6 +76,7 @@
                 </div>
                 @endforelse
             </div>
+
 
             <div class="mt-8 flex justify-center">
                 {{ $products->links() }}

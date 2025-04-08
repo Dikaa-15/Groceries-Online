@@ -8,6 +8,7 @@ use App\Livewire\ProductDetail;
 use App\Livewire\User\DashboardUser;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Livewire\FeaturedProducts;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::get('/products', ProductList::class)->name('products');
+// Route::get('/featured-products', FeaturedProducts::class)->name('featured-products');
 
 // Route::get('/cart', CartIcon::class)->name('cart');
 

@@ -4,7 +4,9 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($products as $product)
-            <div class="border rounded-lg shadow-lg overflow-hidden bg-white hover:shadow-xl transition">
+            <div
+                wire:key="product-{{ $product->id }}"
+                class="border rounded-lg shadow-lg overflow-hidden bg-white hover:shadow-xl transition">
                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                     class="w-full h-48 object-cover rounded-t-lg">
 
@@ -23,7 +25,7 @@
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </p>
                         <div x-data="{ show: false }" class="relative">
-                            <button
+                            <!-- <button
                                 wire:click="addToCart({{ $product->id }})"
                                 @click="show = true; setTimeout(() => show = false, 1500)"
                                 class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition relative">
@@ -31,19 +33,17 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 3h2l1.2 5.4m0 0L7 15h10l2.8-6.6M6.2 8.4h11.6M10 21h4m-7-4h10" />
                                 </svg>
-                            </button>
+                            </button> -->
 
-                            <!-- Animasi +1 -->
-                            <span x-show="show"
-                                x-transition.opacity.duration.1000ms
-                                x-transition:enter="transform translate-y-2 opacity-0 scale-75"
-                                x-transition:enter-end="transform translate-y-[-10px] opacity-100 scale-100"
-                                x-transition:leave="transform translate-y-[-10px] opacity-100 scale-100"
-                                x-transition:leave-end="transform translate-y-[-20px] opacity-0 scale-75"
-                                class="absolute top-0 right-0 text-green-500 font-bold text-lg">
-                                +1
-                            </span>
+                           
+
+
                         </div>
+
+                        <button wire:click="addToCart({{ $product->id }})"
+                                class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition">
+                                <i class="fas fa-cart-plus"></i>
+                            </button>
 
                     </div>
 

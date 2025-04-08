@@ -7,6 +7,10 @@
 
     <title>Laravel</title>
 
+
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
     <!-- Load Lucide Icons dan FontAwesome -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -15,8 +19,9 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-    @vite('resources/css/app.css')
+    @vite('resources/css/app.css', 'resources/js/app.js')
     @livewireStyles
+
 </head>
 
 <body class="font-sans antialiased bg-gray-50 dark:text-white/50">
@@ -30,8 +35,7 @@
     <!-- Kategori Produk -->
     <x-category-section></x-category-section>
 
-    <!-- Livewire: Produk Unggulan -->
-    <livewire:featured-products />
+    <livewire:featured-products />  
 
     <!-- Banner Promosi -->
     <x-banner></x-banner>
@@ -45,7 +49,6 @@
     <!-- Footer -->
     <x-footer></x-footer>
 
-    @livewireScripts
 </body>
 
 </html>
