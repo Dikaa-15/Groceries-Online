@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Products extends Component
 {
+    public $productIds = [];
+
     public function addToCart($productId)
     {
         if (!Auth::check()) {
@@ -39,7 +41,6 @@ class Products extends Component
             ->first();
 
         if ($cartItem) {
-            // Jika stok cukup, tambahkan quantity
             if ($cartItem->quantity < $product->stock) {
                 $cartItem->increment('quantity');
                 $product->decrement('stock'); // Kurangi stok produk
@@ -48,22 +49,25 @@ class Products extends Component
                 return;
             }
         } else {
-            // Jika belum ada, buat entri baru di tabel carts
             Carts::create([
                 'user_id' => $user->id,
                 'product_id' => $product->id,
-                'quantity' => 1,
+                'quantity' => 1
             ]);
 
             // Kurangi stok produk karena produk baru masuk ke cart
             $product->decrement('stock');
         }
 
-        // Emit event agar UI bisa update secara real-time (misalnya di icon carts navbar)
         $this->dispatch('cartUpdated')->to('cart-icon');
 
-        // Flash message ke user
         session()->flash('success', 'Produk ditambahkan ke keranjang!');
+    }
+    
+    public function updatedCategories()
+    {
+        $this->resetPage(); // Reset pagination biar data reload dengan benar}\
+
     }
 
 

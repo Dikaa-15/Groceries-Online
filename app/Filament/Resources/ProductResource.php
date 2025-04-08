@@ -45,6 +45,9 @@ class ProductResource extends Resource
                 TextInput::make('stock')
                     ->label('Stock')
                     ->required(),
+                    TextInput::make('size')
+                    ->label('Size')
+                    ->nullable(),
                 TextInput::make('price')
                     ->label('Price')
                     ->required(),
@@ -80,6 +83,9 @@ class ProductResource extends Resource
                     ->sortable(),
                 TextColumn::make('stock')
                 ->label('Stock')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('size')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('price')

@@ -19,6 +19,7 @@ class CartIcon extends Component
 
     public function updateCartCount()
     {
+
         if (Auth::check()) {
             $this->cartCount = Carts::where('user_id', Auth::id())->sum('quantity');
         } else {

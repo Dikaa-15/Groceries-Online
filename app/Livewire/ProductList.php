@@ -17,7 +17,7 @@ class ProductList extends Component
     public array $categories = [];
     public $sortBy = 'asc';
     public $search = '';
-    public $productIds = [];
+    public $productId = [];
 
     // public function filterByCategory($category)
     // {
@@ -25,7 +25,7 @@ class ProductList extends Component
     //     $this->resetPage(); // Reset pagination setelah filter kategori
     // }
 
-    
+
 
     public function addToCart($productId)
     {
@@ -59,6 +59,7 @@ class ProductList extends Component
         if ($cartItem) {
             if ($cartItem->quantity < $product->stock) {
                 $cartItem->increment('quantity');
+                $product->decrement('stock'); // Kurangi stok produk
             } else {
                 session()->flash('error', 'Jumlah melebihi stok yang tersedia!');
                 return;
@@ -69,7 +70,13 @@ class ProductList extends Component
                 'product_id' => $product->id,
                 'quantity' => 1
             ]);
+
+            // Kurangi stok produk karena produk baru masuk ke cart
+            $product->decrement('stock');
         }
+
+        $this->dispatch('cartUpdated')->to('cart-icon');
+
         session()->flash('success', 'Produk ditambahkan ke keranjang!');
     }
 
@@ -83,8 +90,6 @@ class ProductList extends Component
         $this->resetPage(); // Reset pagination biar data reload dengan benar}\
 
     }
-
-
 
     public function render()
     {

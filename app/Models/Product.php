@@ -13,12 +13,11 @@ class Product extends Model
         'price',
         'category',
         'description',
-        'image'
+        'image',
+        'size'
     ];
     
-    protected $casts = [
-        'category' => 'array',
-    ];
+    // 
 
     
     public function carts()

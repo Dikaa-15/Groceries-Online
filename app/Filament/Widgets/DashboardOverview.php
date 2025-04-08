@@ -5,7 +5,6 @@ namespace App\Filament\Widgets;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Transaction;
-use Filament\Widgets\Widget;
 use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
@@ -24,7 +23,6 @@ class DashboardOverview extends BaseWidget
                 ->icon('heroicon-o-cube')
                 ->color('primary'),
                 // ->icon('heroicon-s-arrow-trending-down'),
-
                 
                 Card::make('Total Transactions', 'IDR ' . number_format(Transaction::sum('total_price'), 2))
                 ->description('Total transaksi')

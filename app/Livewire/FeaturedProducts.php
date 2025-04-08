@@ -15,12 +15,27 @@ class FeaturedProducts extends Component
     public $selectedCategories = ['sayuran']; // Default kategori
     public $categoryIndex = 0; // Index kategori yang sedang ditampilkan
     protected $paginationTheme = 'tailwind'; // Gunakan Tailwind CSS
-    public $productIds = [];
+    public $productId = [];
+
+    // public $cartCount;
+    // protected $listeners = ['cartUpdated' => 'updateCartCount'];
+
+    // public function updateCartCount()
+    // {
+    //     $this->cartCount = Carts::where('user_id', Auth::id())->sum('quantity');
+    // }
+
+    // public function getListeners()
+    // {
+    //     return [
+    //         'cartUpdated' => '$refresh', // Refresh komponen ketika event cartUpdated dipicu
+    //     ];
+    // }
 
     public function addToCart($productId)
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('/login');
         }
 
         $user = Auth::user();
@@ -29,20 +44,17 @@ class FeaturedProducts extends Component
             return;
         }
 
-        $product = Product::where('id', $productId)->first();
+        $product = Product::find($productId);
         if (!$product) {
             session()->flash('error', 'Produk tidak ditemukan!');
             return;
         }
 
-
         // Cek apakah stok masih tersedia
         if ($product->stock <= 0) {
-            $this->dispatch('stockUpdated'); // Tambahkan event Livewire
             session()->flash('error', 'Stok produk habis!');
             return;
         }
-
 
         // Cari apakah produk sudah ada di keranjang user
         $cartItem = Carts::where('user_id', $user->id)
@@ -50,7 +62,6 @@ class FeaturedProducts extends Component
             ->first();
 
         if ($cartItem) {
-            // Jika stok cukup, tambahkan quantity
             if ($cartItem->quantity < $product->stock) {
                 $cartItem->increment('quantity');
                 $product->decrement('stock'); // Kurangi stok produk
@@ -59,23 +70,22 @@ class FeaturedProducts extends Component
                 return;
             }
         } else {
-            // Jika belum ada, buat entri baru di tabel carts
             Carts::create([
                 'user_id' => $user->id,
                 'product_id' => $product->id,
-                'quantity' => 1,
+                'quantity' => 1
             ]);
 
             // Kurangi stok produk karena produk baru masuk ke cart
             $product->decrement('stock');
         }
 
-        // Emit event agar UI bisa update secara real-time (misalnya di icon carts navbar)
         $this->dispatch('cartUpdated')->to('cart-icon');
 
-        // Flash message ke user
         session()->flash('success', 'Produk ditambahkan ke keranjang!');
     }
+
+
 
 
     public function updatedSelectedCategories()
@@ -118,7 +128,7 @@ class FeaturedProducts extends Component
     public function getProducts()
     {
         $category = $this->getCurrentCategory();
-        return Product::where('category', $category)->paginate(3);
+        return Product::where('category', $category)->paginate(10);
     }
 
     public function render()
