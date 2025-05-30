@@ -5,11 +5,23 @@ namespace App\Livewire;
 use App\Models\Carts;
 use App\Models\Product;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 class Products extends Component
 {
     public $productIds = [];
+
+    public function directBuy($productId)
+    {
+        $randomCode = Str::random(8); // ← Random 8 karakter
+
+        // Simpan id produk ke session dengan kode acak
+        session()->put("checkout_{$randomCode}", $productId);
+
+        // Redirect ke route checkout dengan kode
+        return redirect()->route('checkout', ['directCheckout' => $randomCode]);
+    }
 
     public function addToCart($productId)
     {
@@ -63,7 +75,7 @@ class Products extends Component
 
         session()->flash('success', 'Produk ditambahkan ke keranjang!');
     }
-    
+
     public function updatedCategories()
     {
         $this->resetPage(); // Reset pagination biar data reload dengan benar}\

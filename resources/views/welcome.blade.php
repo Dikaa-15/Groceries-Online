@@ -19,8 +19,11 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-    @vite('resources/css/app.css', 'resources/js/app.js')
+    @vite('resources/css/app.css')
     @livewireStyles
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- CDN TAILWIND -->
 
 </head>
 
@@ -35,7 +38,7 @@
     <!-- Kategori Produk -->
     <x-category-section></x-category-section>
 
-    <livewire:featured-products />  
+    <livewire:featured-products />
 
     <!-- Banner Promosi -->
     <x-banner></x-banner>
@@ -49,6 +52,7 @@
     <!-- Footer -->
     <x-footer></x-footer>
 
+    @livewireScripts
 </body>
 
 </html>

@@ -3,11 +3,13 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Transaction;
-use Filament\Widgets\TableWidget as BaseWidget;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestTransactions extends BaseWidget
 {
@@ -34,6 +36,7 @@ class LatestTransactions extends BaseWidget
                 }),
             ImageColumn::make('transfer_poto')->label('Proof'),
             TextColumn::make('created_at')->label('Order date')->date('F j, Y'),
+
         ];
     }
 
@@ -47,6 +50,22 @@ class LatestTransactions extends BaseWidget
                     'failed' => 'Failed',
                     'pending' => 'Pending',
                 ]),
+        ];
+    }
+
+    protected function getTableActions(): array
+    {
+        return [
+            ViewAction::make(),
+            Action::make('approve')
+                ->label('Approve')
+                ->icon('heroicon-o-check-circle')
+                ->requiresConfirmation()
+                ->color('success')
+                ->visible(fn($record): bool => $record->status === 'pending')
+                ->action(function ($record) {
+                    $record->update(['status' => 'success']);
+                }),
         ];
     }
 }

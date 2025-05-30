@@ -12,6 +12,9 @@ class CartIcon extends Component
 
     protected $listeners = ['cartUpdated' => 'updateCartCount'];
 
+    // protected $listeners = ['cartUpdated' => '$refresh'];
+
+
     public function mount()
     {
         $this->updateCartCount();

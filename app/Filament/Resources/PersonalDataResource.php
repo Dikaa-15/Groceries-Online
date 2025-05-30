@@ -35,10 +35,13 @@ class PersonalDataResource extends Resource
                 Select::make('user_id')
                     ->label('User')
                     ->relationship('user', 'name')
-                    ->required(),
+                    ->required()
+                    ->searchable()
+                    ->preload(),
 
                 TextInput::make('first_name')
                     ->label('First Name')
+                    
                     ->required(),
 
                 TextInput::make('last_name')

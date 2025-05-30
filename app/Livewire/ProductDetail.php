@@ -15,12 +15,23 @@ class ProductDetail extends Component
 
     public $product;
     public $quantity = 1; // Default quantity 1
+    public $payment;
+    public $transferPhoto;
 
-    public $paymentMethod, $transferPhoto;
+    protected $rules = [
+        'quantity' => 'integer|min:1',
+        'payment' => 'required|in:bca,bri,bni',
+        'transferPhoto' => 'required|image|max:2048',
+    ];
+
+    // public function updatedPayment($value)
+    // {
+    //     dd($value); // Check if this fires when selecting a payment method
+    // }
 
     public function mount($productId)
     {
-        $this->product = Product::find($productId) ?? abort(404, 'Product not found');
+        $this->product = Product::with(['rates.user'])->find($productId) ?? abort(404, 'Product not found');
     }
 
     public function updatedQuantity()
@@ -53,6 +64,7 @@ class ProductDetail extends Component
             ]);
         }
 
+
         $this->dispatch('cartUpdated');
         session()->flash('success', 'Product added to cart!');
     }
@@ -60,43 +72,14 @@ class ProductDetail extends Component
     public function goToCheckout($productId)
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('login'); // Kasih redirect ke login dulu kalau belum login
         }
 
-        // Validasi Input
-        $this->validate([
-            'paymentMethod' => 'required|in:bca,bri,bni',
-            'transferPhoto' => $this->paymentMethod !== 'bca' ? 'nullable' : 'required|image|max:2048',
-        ]);
+        // Simpan productId ke session
+        session()->put('direct_checkout_product_id', $productId);
 
-
-        // Cek stok sebelum checkout
-        if ($this->product->stock < $this->quantity) {
-            session()->flash('error', 'Stock is not enough!');
-            return;
-        }
-
-
-
-        // Simpan Foto Transfer
-        $photoPath = $this->transferPhoto->store('transfers', 'public');
-
-        // Simpan Order
-        $order = Transaction::create([
-            'order_id' => 'ORD-' . time(),
-            'user_id' => Auth::id(),
-            'product_id' => $productId,
-            'quantity' => $this->quantity,
-            'total_price' => $this->product->price * $this->quantity,
-            'status' => 'pending',
-            'payment' => $this->paymentMethod,
-            'transfer_poto' => $photoPath,
-        ]);
-
-        // Kurangi stok produk
-        $this->product->decrement('stock', $this->quantity);
-
-        return redirect()->route('/');
+        // Redirect ke halaman konfirmasi checkout
+        return redirect()->route('checkout.confirm');
     }
 
     public function increaseQuantity()
@@ -111,6 +94,8 @@ class ProductDetail extends Component
 
     public function render()
     {
-        return view('livewire.product-detail');
+        return view('livewire.product-detail', [
+            'product' => $this->product
+        ]);
     }
 }

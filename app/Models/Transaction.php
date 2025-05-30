@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     //
-        protected $fillable = ['order_id', 'user_id', 'product_id', 'quantity', 'total_price', 'status', 'payment', 'transfer_poto'];
+    protected $fillable = ['order_id', 'user_id', 'product_id', 'quantity', 'total_price', 'status', 'payment', 'transfer_poto'];
 
     public function user()
     {
@@ -18,6 +18,14 @@ class Transaction extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function review()
+    {
+        return $this->hasOne(Rates::class, 'product_id', 'product_id');
+    }
+
+
+
 
 
 

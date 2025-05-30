@@ -4,36 +4,79 @@ namespace App\Livewire;
 
 use App\Models\Carts;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 class CartPage extends Component
 {
-    public $cartItems = [];
+    public $cartItems;
     protected $listeners = ['cartUpdated' => 'loadCart'];
     public $selectedItems = [];
     public $cartId;
+    public $selectAll = false;
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedItems = $this->cartItems->pluck('id')->toArray();
+        } else {
+            $this->selectedItems = [];
+        }
+    }
+
+    public function checkoutSelected()
+    {
+        if (!empty($this->selectedItems)) {
+            session()->put('checkout_cart_ids', $this->selectedItems);
+            return redirect()->route('checkout');
+        }
+    }
+
+
+    public function getTotalPrice()
+    {
+        return $this->cartItems
+            ->whereIn('id', $this->selectedItems)
+            ->sum(fn($item) => $item->product->price * $item->quantity);
+    }
+
+    public function deleteSelected()
+    {
+        if (!empty($this->selectedItems)) {
+            Carts::whereIn('id', $this->selectedItems)
+                ->where('user_id', Auth::id())
+                ->delete();
+
+            $this->selectedItems = [];
+            $this->selectAll = false;
+            $this->loadCart();
+        }
+    }
 
     public function updatedSelectedItems()
     {
+        $this->selectAll = count($this->selectedItems) === $this->cartItems->count();
         $this->selectedItems = array_filter($this->selectedItems); // Filter item terpilih
     }
 
-    public function goToCheckout()
+    public function directBuy($productId)
     {
-        if (empty($this->selectedItems)) {
-            session()->flash('message', 'Pilih produk terlebih dahulu sebelum checkout.');
-            return;
-        }
+        $randomCode = Str::random(8); // ← Random 8 karakter
 
-        session()->put('selected_cart_items', $this->selectedItems);
-        return redirect()->route('checkout');
+        // Simpan id produk ke session dengan kode acak
+        session()->put("checkout_{$randomCode}", $productId);
+
+        // Redirect ke route checkout dengan kode
+        return redirect()->route('checkout', ['directCheckout' => $randomCode]);
     }
+
 
 
     public function mount()
     {
         $this->loadCart();
     }
+    
     public function loadCart()
     {
         if (Auth::check()) {
@@ -59,7 +102,7 @@ class CartPage extends Component
             $this->loadCart();
         }
     }
-    
+
     public function increase($cartId)
     {
         $cart = Carts::findOrFail($cartId);
@@ -77,7 +120,6 @@ class CartPage extends Component
             $this->dispatch('cartUpdated');
         }
     }
-
 
     public function checkout()
     {

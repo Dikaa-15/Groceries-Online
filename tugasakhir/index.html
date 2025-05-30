@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Produk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-green-50 to-white min-h-screen font-sans">
+  <div class="max-w-7xl mx-auto p-6">
+    <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col lg:flex-row gap-8 border border-gray-200">
+
+      <!-- Gambar Produk -->
+      <div class="lg:w-1/2 flex flex-col gap-4">
+        <div class="overflow-hidden rounded-lg border hover:shadow-xl transition">
+          <img src="image/sayur jpg.jpg" alt="Sawi" class="w-full h-[400px] object-cover" />
+        </div>
+
+        <!-- Thumbnail -->
+        <div class="flex gap-3 mt-2">
+          <img src="image/bok-choy-92172786-5720afff5f9b58857d16a351.webp"
+            class="w-20 h-20 object-cover border-2 border-green-500 rounded-lg cursor-pointer hover:scale-105 transition" />
+          <img src="image/murxuknfp2w98qe.png"
+            class="w-20 h-20 object-cover border rounded-lg cursor-pointer hover:scale-105 transition" />
+          <img src="image/no-brand_sayur-pakcoy-besar-200gr-ikat_full01.webp"
+            class="w-20 h-20 object-cover border rounded-lg cursor-pointer hover:scale-105 transition" />
+        </div>
+      </div>
+
+      <!-- Info Produk -->
+      <div class="lg:w-1/2 flex flex-col gap-4">
+        <!-- Nama & Kategori -->
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Pakcoyyyyy</h1>
+          <span class="inline-block mt-2 px-3 py-1 text-sm bg-green-100 text-green-800 rounded-full font-semibold">
+            Fashion / Pria / Kemeja
+          </span>
+        </div>
+
+        <!-- Harga -->
+        <div class="text-4xl font-bold text-emerald-600 mt-4">Rp 120.000</div>
+
+        <!-- Stok dan Ukuran -->
+        <div class="flex items-center gap-10 mt-4">
+          <div>
+            <p class="text-gray-500 font-medium">Stok</p>
+            <p class="text-lg font-semibold text-gray-800">25 pcs</p>
+          </div>
+          <div>
+            <p class="text-gray-500 font-medium">Ukuran</p>
+            <p class="text-lg font-semibold text-gray-800">M, L, XL</p>
+          </div>
+        </div>
+
+        <!-- Deskripsi -->
+        <div class="mt-6">
+          <h2 class="text-lg font-semibold text-gray-800 mb-2">Deskripsi Produk</h2>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            sayuran sehat dan enak
+          </p>
+        </div>
+
+        <!-- Tombol -->
+        <div class="flex flex-wrap gap-4 mt-8">
+          <button class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg shadow transition">
+            🛒 Tambahkan ke Keranjang
+          </button>
+          <button
+            class="border border-emerald-600 text-emerald-600 px-6 py-3 rounded-lg hover:bg-emerald-50 transition">
+            💸 Beli Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

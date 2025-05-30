@@ -80,9 +80,6 @@
           <p class="font-normal text-sm text-slate-500">
             © 2025 Groceries Online. All rights reserved.
           </p>
-          <form action="{{ route('logout') }}" method="POST">
-            <button type="submit" class="text-slate-500">Logout</button>
-          </form>
           <p class="font-normal text-sm text-slate-500">Team Groceries Online</p>
         </div>
       </div>

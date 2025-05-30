@@ -1,44 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'My App' }}</title>
-    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- @vite('resources/css/app.css') -->
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script> -->
-
-    <!-- <script type="module" src="{{ asset('js/cart-animation.js') }}"></script> -->
-
+    <!-- Tailwind via Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
-
 </head>
 
-<body class="bg-gray-100">
+<body class="font-sans antialiased bg-gray-100 text-gray-800">
+    <div class="min-h-screen">
+        @include('layouts.navigation')
 
-    <x-navbar />
+        <!-- Page Heading -->
+        @isset($header)
+        <header class="bg-white shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
+        @endisset
 
-    <main class="container mx-auto py-8 px-6">
-        {{ $slot }}
-    </main>
-
-    <x-footer></x-footer>
-
-        <!-- @livewireStyles -->
-        @livewireScripts
-
+        <!-- Page Content -->
+        <main class="py-10">
+            {{ $slot }}
+        </main>
+    </div>
 </body>
 
 </html>

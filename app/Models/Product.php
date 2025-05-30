@@ -6,20 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    //
-    protected $fillable = [
-        'name',
-        'stock',
-        'price',
-        'category',
-        'description',
-        'image',
-        'size'
-    ];
-    
-    // 
-
-    
+    protected $fillable = ['name', 'stock','price','category','description','image','size'];
     public function carts()
     {
         return $this->hasMany(Carts::class);
@@ -27,5 +14,10 @@ class Product extends Model
     public function rates()
     {
         return $this->hasMany(Rates::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->rates()->avg('rate');
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rates extends Model
 {
-    //
+    //   
     protected $fillable = ['user_id', 'product_id', 'rate', 'comment'];
 
     public function user()
@@ -16,5 +16,10 @@ class Rates extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->rates()->avg('rate');
     }
 }

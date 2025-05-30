@@ -17,31 +17,52 @@ class Checkout extends Component
     public $paymentMethod;
     public $totalPrice;
     public $transfer_poto;
-    public $selectedItems = [];
 
-    public function mount($directCheckout = false)
+    public function mount($directCheckout = null)
     {
-        if ($directCheckout) {
-            $productId = session()->get('direct_checkout_product_id');
-            if ($productId) {
-                $product = Product::findOrFail($productId);
-
-                $this->cartItems = collect([(object) [
-                    'id' => null,
-                    'product_id' => $product->id,
-                    'product' => $product,
-                    'quantity' => 1,
-                ]]);
-
-                $this->totalPrice = $product->price;
-            }
+        if ($directCheckout && session()->has('direct_checkout_product_id')) {
+            $productId = session()->pull('direct_checkout_product_id');
+            $product = Product::findOrFail($productId);
+            $this->cartItems = collect([(object) [
+                'id' => null,
+                'product_id' => $product->id,
+                'product' => $product,
+                'quantity' => 1,
+            ]]);
+            $this->calculateTotal();
         } else {
             $selectedItems = session()->get('selected_cart_items', []);
-            $this->cartItems = Carts::where('user_id', Auth::id())
-                ->whereIn('id', $selectedItems)
+            $this->cartItems = Carts::with('product')
+                ->where('user_id', Auth::id())
+                ->when($selectedItems, fn($q) => $q->whereIn('id', $selectedItems))
                 ->get();
+            $this->calculateTotal();
+        }
+    }
 
-            $this->totalPrice = $this->cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+    // Method untuk update total price
+    public function calculateTotal()
+    {
+        $this->totalPrice = $this->cartItems->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+    }
+
+    // Tambah quantity
+    public function incrementQuantity($index)
+    {
+        if (isset($this->cartItems[$index])) {
+            $this->cartItems[$index]->quantity++;
+            $this->calculateTotal();
+        }
+    }
+
+    // Kurangi quantity (minimal 1)
+    public function decrementQuantity($index)
+    {
+        if (isset($this->cartItems[$index]) && $this->cartItems[$index]->quantity > 1) {
+            $this->cartItems[$index]->quantity--;
+            $this->calculateTotal();
         }
     }
 
@@ -71,7 +92,7 @@ class Checkout extends Component
         }
 
         session()->flash('message', 'Checkout berhasil! Pesanan sedang diproses.');
-        return redirect()->route('/');
+        return redirect()->route('home');
     }
 
     public function render()

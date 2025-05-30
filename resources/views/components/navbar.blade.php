@@ -9,22 +9,53 @@
 
         <!-- Menu (Laptop) -->
         <ul class="hidden md:flex space-x-8 text-lg text-gray-700">
-            <li><a href="{{ url('/') }}" class="hover:text-green-600 transition">Home</a></li>
-            <li><a href="{{ url('/products') }}" class="hover:text-green-600 transition">Products</a></li>
-            <li><a href="{{ url('/contact') }}" class="hover:text-green-600 transition">Contact Us</a></li>
+            <li>
+                <a href="{{ url('/') }}"
+                    class="transition {{ request()->is('/') ? 'text-green-600 font-semibold' : 'hover:text-green-600' }}">
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="{{ url('/products') }}"
+                    class="transition {{ request()->is('products') ? 'text-green-600 font-semibold' : 'hover:text-green-600' }}">
+                    Products
+                </a>
+            </li>
+            <li>
+                <a href="{{ url('/contact') }}"
+                    class="transition {{ request()->is('contact') ? 'text-green-600 font-semibold' : 'hover:text-green-600' }}">
+                    Contact Us
+                </a>
+            </li>
         </ul>
+
 
         <!-- Icons (Profile & Cart) + Auth Buttons -->
         <div class="flex items-center space-x-5">
             @auth
-            <a href="{{ url('/profile') }}" class="hover:text-green-600 text-gray-400 transition">
+            @php
+            $user = Auth::user();
+            $redirectProfile = '/profile';
+
+            if ($user->roles === 'admin') {
+            $redirectProfile = '/admin';
+            } elseif ($user->roles === 'user') {
+            $redirectProfile = '/dashboard';
+            }
+            @endphp
+
+            <a href="{{ url($redirectProfile) }}" class="hover:text-green-600 text-gray-400 transition">
                 <i class="fas fa-user text-xl"></i>
             </a>
-            <a href="{{ url('/cart') }}" class="hover:text-green-600 text-gray-400 transition relative">
+
+            <a href="{{ url('/cart') }}"
+                class="transition relative 
+       {{ request()->is('cart') ? 'text-green-600' : 'text-gray-400 hover:text-green-600' }}">
                 <i class="fas fa-shopping-cart text-xl"></i>
-                <span class="absolute -top-2 -right-2">@livewire('cart-icon')
-                </span>
+                <span class="absolute -top-2 -right-2">@livewire('cart-icon')</span>
             </a>
+
+
             @else
             <a href="{{ url('/login') }}"
                 class="px-4 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition duration-300">

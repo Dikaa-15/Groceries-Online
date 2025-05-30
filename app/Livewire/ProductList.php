@@ -93,19 +93,26 @@ class ProductList extends Component
 
     public function render()
     {
-        $products = Product::query()
-            ->when($this->search, function ($query) {
-                return $query->where('name', 'like', '%' . $this->search . '%');
-            })
-            ->when(!empty($this->categories), function ($query) {
-                return $query->whereIn('category', $this->categories);
-            })
+        $query = Product::query();
 
-            ->orderBy('price', $this->sortBy)
-            ->paginate(9);
+        if ($this->search) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
 
-        // dd($this->categories);
+        if (!empty($this->categories)) {
+            $query->whereIn('category', $this->categories);
+        }
 
+        // Default sorting: latest (created_at DESC)
+        if (!$this->search && empty($this->categories) && !$this->sortBy) {
+            $query->latest(); // = orderBy('created_at', 'desc')
+        }
+        // Kalau sortBy ada (user udah klik sort), pakai itu
+        elseif ($this->sortBy) {
+            $query->orderBy('price', $this->sortBy);
+        }
+
+        $products = $query->paginate(9);
 
         return view('livewire.product-list', compact('products'));
     }

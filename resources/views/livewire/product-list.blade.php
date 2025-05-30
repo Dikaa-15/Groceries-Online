@@ -58,10 +58,7 @@
                             <p class="text-green-500 font-bold text-lg">
                                 Rp {{ number_format($product->price, 0, ',', '.') }}
                             </p>
-                            <button wire:click="addToCart({{ $product->id }})"
-                                class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition">
-                                <i class="fas fa-cart-plus"></i>
-                            </button>
+                            
                         </div>
 
                         <a href="{{ url('/products/' . $product->id) }}"
@@ -78,12 +75,10 @@
             </div>
 
 
-            <div class="mt-8 flex justify-center">
-                {{ $products->links() }}
-            </div>
+
 
             <!-- Custom Pagination -->
-            <div class="mt-6 flex justify-center space-x-4">
+            <div class="mt-14 flex justify-center space-x-4">
                 @if ($products->hasMorePages())
                 <button wire:click="nextPage"
                     class="bg-green-500 text-white px-5 py-3 rounded-lg hover:bg-green-600 transition">

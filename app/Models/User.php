@@ -16,14 +16,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone_number',
-        'profile',
-        'role',
-    ];
+    protected $fillable = [ 'name','email', 'password', 'phone_number', 'profile', 'role',];
+    
     public function personalData()
     {
         return $this->hasOne(PersonalData::class);
