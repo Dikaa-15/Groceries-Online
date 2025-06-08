@@ -1,0 +1,5 @@
+-- HERES SOME BUG --
+1. 
+
+-- HERES SOME IMPROVE FITUR/PAGE --
+1. USE CAN FILTER my-transaction BY STATUS

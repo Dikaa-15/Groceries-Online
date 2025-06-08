@@ -91,13 +91,13 @@
                 <div class="flex flex-wrap gap-4 mt-8">
                     <button wire:click="addToCart"
                         class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg shadow transition">
-                        🛒 Add-to-cart
+                        Add-to-cart
                     </button>
 
                     <button
                         class="border border-emerald-600 text-emerald-600 px-6 py-3 rounded-lg hover:bg-emerald-50 transition"
                         wire:click="directBuy({{ $product->id }})">
-                        💸 Buy now
+                        Buy now
                     </button>
 
                 </div>

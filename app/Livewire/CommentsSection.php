@@ -11,7 +11,7 @@ class CommentsSection extends Component
 
     public function mount()
     {
-        $this->comments = Rates::with('user')->latest()->take(3)->get();
+        $this->comments = Rates::with('user')->latest()->take(6)->get();
     }
     
     public function render()

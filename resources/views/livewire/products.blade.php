@@ -75,7 +75,7 @@
                         {{ $product->stock == 0 ? 'disabled' : '' }}>
                         {{ $product->stock == 0 ? 'Out of Stock' : 'Shop Now!' }}
                     </button>
-
+                            
                 </div>
             </div>
             @endforeach

@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\EnsureOrderSuccessInSession;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
@@ -13,7 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //alia
-        $middleware->alias(['admin', AdminMiddleware::class]);
+        $middleware->alias([
+            'admin', AdminMiddleware::class
+        ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions) {

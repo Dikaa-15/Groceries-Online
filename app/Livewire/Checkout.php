@@ -20,8 +20,8 @@ class Checkout extends Component
 
     public function mount($directCheckout = null)
     {
-        if ($directCheckout && session()->has('direct_checkout_product_id')) {
-            $productId = session()->pull('direct_checkout_product_id');
+        if ($directCheckout && session()->has("checkout_{$directCheckout}")) {
+            $productId = session()->pull("checkout_{$directCheckout}");
             $product = Product::findOrFail($productId);
             $this->cartItems = collect([(object) [
                 'id' => null,
@@ -75,8 +75,10 @@ class Checkout extends Component
 
         $photoPath = $this->transfer_poto->store('transfers', 'public');
 
+        $latestTransaction = null;
+
         foreach ($this->cartItems as $item) {
-            Transaction::create([
+            $latestTransaction = Transaction::create([
                 'user_id' => Auth::id(),
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity,
@@ -91,8 +93,12 @@ class Checkout extends Component
             }
         }
 
+        // 🚨 Set session agar hanya bisa akses halaman success setelah ini
+        session()->put('success_transaction_id', $latestTransaction->id);
+
         session()->flash('message', 'Checkout berhasil! Pesanan sedang diproses.');
-        return redirect()->route('home');
+        // Redirect ke halaman success
+        return redirect()->route('checkout.success');
     }
 
     public function render()

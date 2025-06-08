@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Livewire\CartPage;
 use App\Livewire\Checkout;
+use App\Livewire\CheckoutSuccess;
 use App\Livewire\ProductList;
 use App\Livewire\DetailProduct;
 use App\Livewire\ProductDetail;
@@ -17,6 +19,10 @@ use App\Livewire\ProductReview as LivewireProductReview;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('/our-team', function () {
+    return view('our-team');
+})->name('our-team');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -34,12 +40,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cart', CartPage::class)->name('cart');
     Route::get('/checkout/{directCheckout?}', Checkout::class)->name('checkout');
+
+    //success page
+    Route::get('/checkout-success', CheckoutSuccess::class)->name('checkout.success');
+
     // web.php
     Route::get('/review/product/{name}', LivewireProductReview::class)->name('review.product');
 
     // Route::get('/checkout/confirm', CheckoutConfirm::class)->middleware('auth')->name('checkout.confirm');
     Route::get('/user/dashboard', DashboardUser::class)->name('user.dashboard');
     Route::get('/my-transactions', MyTransactions::class)->name('my-transactions');
+
+    // Contact
+    Route::get('/contact-us', [ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact-us', [ContactController::class, 'store'])->name('contact.store');
 });
 
 

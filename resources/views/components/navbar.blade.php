@@ -22,8 +22,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('/contact') }}"
-                    class="transition {{ request()->is('contact') ? 'text-green-600 font-semibold' : 'hover:text-green-600' }}">
+                <a href="{{ url('/contact-us') }}"
+                    class="transition {{ request()->is('contact.index') ? 'text-green-600 font-semibold' : 'hover:text-green-600' }}">
                     Contact Us
                 </a>
             </li>
@@ -37,9 +37,9 @@
             $user = Auth::user();
             $redirectProfile = '/profile';
 
-            if ($user->roles === 'admin') {
+            if ($user->role === 'admin') {
             $redirectProfile = '/admin';
-            } elseif ($user->roles === 'user') {
+            } elseif ($user->role === 'user') {
             $redirectProfile = '/dashboard';
             }
             @endphp
