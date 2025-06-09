@@ -1,5 +1,6 @@
 -- HERES SOME BUG --
-1. 
+1. Unable to resolve dependency [Parameter #0 [ <required> $productId ]] in class App\Livewire\CartPage
+pada saat klik buy now pada halaman cart
 
 -- HERES SOME IMPROVE FITUR/PAGE --
 1. USE CAN FILTER my-transaction BY STATUS

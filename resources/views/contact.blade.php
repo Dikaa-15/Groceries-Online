@@ -30,7 +30,7 @@
 </head>
 
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-    <x-navbar></x-navbar>
+    <x-navbar class="bg-main"></x-navbar>
     <div class="container mx-auto px-4 py-12 mt-16">
         <!-- Section Header -->
         <div class="text-center mb-12">
@@ -47,7 +47,7 @@
             <div class="lg:w-1/2 w-full">
                 <div class="bg-white rounded-2xl shadow-md overflow-hidden h-full">
                     <div class="p-6">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Location</h2>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Locasi kami</h2>
                         <p class="text-gray-600 mb-6">
                             SMK Jakarta Pusat 1<br>
                             Jl. Abdul Muis No.44 1, RT.1/RW.8, Petojo Sel., Kecamatan Gambir, Kota Jakarta Pusat, Daerah

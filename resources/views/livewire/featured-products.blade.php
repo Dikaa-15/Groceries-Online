@@ -19,7 +19,7 @@
 
         <!-- Produk - Modernized -->
         <div class="md:col-span-9 col-span-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Featured Products <span class="text-green-600">({{ ucfirst($currentCategory) }})</span></h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Shop now by category <span class="text-green-600">({{ ucfirst($currentCategory) }})</span></h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @if ($products->isEmpty())
@@ -44,7 +44,7 @@
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
 
                         <!-- Eye Icon Saat Hover -->
-                        <a href="{{ url('/products/' . strtolower($product->category) . '-' . Str::slug($product->name)) }}"
+                        <a href="{{ url('/products/' . strtolower($product->category) . '-' . ($product->name)) }}"
                             class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black bg-opacity-20">
                             <div class="bg-white rounded-full p-3 shadow-lg transform transition-transform duration-300 group-hover:scale-110">
                                 <i class="fas fa-eye text-green-600 text-xl"></i>

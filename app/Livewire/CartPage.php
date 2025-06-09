@@ -29,8 +29,11 @@ class CartPage extends Component
         if (!empty($this->selectedItems)) {
             session()->put('checkout_cart_ids', $this->selectedItems);
             return redirect()->route('checkout');
+        } else {
+            session()->flash('message', 'Pilih item dulu, bos!');
         }
     }
+
 
 
     public function getTotalPrice()
@@ -76,7 +79,7 @@ class CartPage extends Component
     {
         $this->loadCart();
     }
-    
+
     public function loadCart()
     {
         if (Auth::check()) {

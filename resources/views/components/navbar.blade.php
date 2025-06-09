@@ -85,7 +85,7 @@
         <ul class="flex flex-col text-lg text-gray-700">
             <li><a href="{{ url('/') }}" class="block px-4 py-2 hover:bg-gray-100">Home</a></li>
             <li><a href="{{ url('/products') }}" class="block px-4 py-2 hover:bg-gray-100">Products</a></li>
-            <li><a href="{{ url('/contact') }}" class="block px-4 py-2 hover:bg-gray-100">Contact Us</a></li>
+            <li><a href="{{ url('/contact-us') }}" class="block px-4 py-2 hover:bg-gray-100">Contact Us</a></li>
         </ul>
     </div>
 </nav>

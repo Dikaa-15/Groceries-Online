@@ -68,7 +68,7 @@
                     Rp{{ number_format($this->getTotalPrice(), 0, ',', '.') }}
                 </span>
             </p>
-            <button wire:click="directBuy"
+            <button wire:click="checkoutSelected"
                 class="mt-1 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">
                 Checkout
             </button>

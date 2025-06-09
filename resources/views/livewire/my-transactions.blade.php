@@ -75,6 +75,11 @@
             @empty
             <p class="text-center text-gray-500 py-8">Belum ada transaksi nih 😢</p>
             @endforelse
+
+            <div class="mt-6">
+                {{ $transactions->links() }}
+            </div>
+
         </div>
 
     </div>
