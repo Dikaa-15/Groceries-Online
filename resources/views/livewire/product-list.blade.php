@@ -28,14 +28,7 @@
 
         <!-- Daftar Produk -->
         <div class="lg:col-span-9">
-            <div class="flex flex-col md:flex-row md:justify-between mb-6">
-                <h2 class="text-3xl font-bold text-gray-800">Products</h2>
-                <select wire:model.live="sortBy"
-                    class="border px-4 py-2 rounded-lg bg-white/40 backdrop-blur-lg transition-all duration-300 hover:bg-white/60 focus:ring-2 focus:ring-green-500">
-                    <option value="asc">Price: Low to High</option>
-                    <option value="desc">Price: High to Low</option>
-                </select>
-            </div>
+            
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @forelse ($products as $product)
